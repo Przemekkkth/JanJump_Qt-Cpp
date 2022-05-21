@@ -11,6 +11,10 @@ GameScene::GameScene(QObject *parent)
 {
     Game::init();
     setSceneRect(0, 0, m_game.RESOLUTION.width(), m_game.RESOLUTION.height());
+//
+    m_heroItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_DOODLE_PIXMAP));
+    m_heroTransform = m_heroItem->transform();
+    addItem(m_heroItem);
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &GameScene::update);
     m_timer->start(m_iteration_value);
@@ -24,7 +28,6 @@ GameScene::GameScene(QObject *parent)
 
 void GameScene::keyPressEvent(QKeyEvent *event)
 {
-
     switch (event->key()) {
     case Qt::Key_Left:
         m_leftMove = true;
@@ -54,9 +57,9 @@ void GameScene::keyReleaseEvent(QKeyEvent *event)
 void GameScene::update()
 {
     clear();
-    m_heroItem = new QGraphicsPixmapItem(m_game.DOODLE_PIXMAP);
-    m_bgIteam = new QGraphicsPixmapItem(m_game.BACKGROUND_PIXMAP);
-    m_platformItem = new QGraphicsPixmapItem(m_game.PLATFORM_PIXMAP);
+    m_heroItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_DOODLE_PIXMAP));
+    m_bgIteam = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_BACKGROUND_PIXMAP));
+    m_platformItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP));
     addItem(m_bgIteam);
     addItem(m_heroItem);
     m_heroItem->setPos(m_heroXpos, m_heroYpos);
@@ -64,16 +67,25 @@ void GameScene::update()
 
 
     m_time_since_last_iteration += m_iteration_value;
-    if(m_time_since_last_iteration > Game::DELAY)
+    if(true)
     {
         m_time_since_last_iteration = 0;
         if(m_leftMove)
         {
             m_heroXpos -= m_deltaX;
+            if(m_heroTransform.m11() != -1)
+            {
+               //m_heroTransform = m_heroTransform.scale(-1, 1);
+            }
+
         }
         else if(m_rightMove)
         {
             m_heroXpos += m_deltaX;
+            if(m_heroTransform.m11() != 1)
+            {
+               //m_heroTransform = m_heroItem->transform();
+            }
         }
 
         m_deltaY += 0.2f;
@@ -112,8 +124,9 @@ void GameScene::update()
 
     for(int i = 0; i < m_countOfPlatforms; ++i)
     {
-        QGraphicsPixmapItem* platform_item = new QGraphicsPixmapItem(m_game.PLATFORM_PIXMAP);
+        QGraphicsPixmapItem* platform_item = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP));
         platform_item->setPos(m_platforms[i].x, m_platforms[i].y);
         addItem(platform_item);
     }
+    m_heroItem->setTransform(m_heroTransform);
 }

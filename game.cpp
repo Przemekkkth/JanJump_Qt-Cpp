@@ -5,9 +5,9 @@ float Game::DELAY;
 
 Game::Game()
 {
-    Q_ASSERT(BACKGROUND_PIXMAP.load(":/images/background.png"));
-    Q_ASSERT(DOODLE_PIXMAP.load(":/images/doodle.png"));
-    Q_ASSERT(PLATFORM_PIXMAP.load(":/images/platform.png"));
+    PATH_TO_BACKGROUND_PIXMAP = ":/images/background.png";
+    PATH_TO_DOODLE_PIXMAP = ":/images/doodle.png";
+    PATH_TO_PLATFORM_PIXMAP = ":/images/platform.png";
 }
 
 void Game::init()

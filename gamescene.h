@@ -2,8 +2,11 @@
 #define GAMESCENE_H
 
 #include <QGraphicsScene>
+#include <QTransform>
+
 #include "game.h"
 #include "point.h"
+
 class QGraphicsPixmapItem;
 class QTimer;
 class GameScene : public QGraphicsScene
@@ -34,6 +37,8 @@ private:
     int m_height;
 
     QGraphicsPixmapItem* m_heroItem;
+    QTransform m_heroTransform;
+
     QGraphicsPixmapItem* m_bgIteam;
     QGraphicsPixmapItem* m_platformItem;
 
