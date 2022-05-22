@@ -38,6 +38,7 @@ private:
 
     QGraphicsPixmapItem* m_heroItem;
     QTransform m_heroTransform;
+    bool m_facingRight;
 
     QGraphicsPixmapItem* m_bgIteam;
     QGraphicsPixmapItem* m_platformItem;
