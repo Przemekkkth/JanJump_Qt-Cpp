@@ -60,6 +60,7 @@ void GameScene::update()
     m_heroItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_DOODLE_PIXMAP));
     m_bgIteam = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_BACKGROUND_PIXMAP));
     m_platformItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP));
+    //platform resolution 68x14
     addItem(m_bgIteam);
     addItem(m_heroItem);
     m_heroItem->setPos(m_heroXpos, m_heroYpos);
@@ -97,23 +98,23 @@ void GameScene::update()
 
         if (m_heroYpos < m_height)
         {
-            for (int i=0; i <m_countOfPlatforms; i++)
+            for (int i= 0; i < m_countOfPlatforms; i++)
             {
                 m_heroYpos = m_height;
                 m_platforms[i].y = m_platforms[i].y - m_deltaY;
-                if (m_platforms[i].y > 533)
+                if (m_platforms[i].y > Game::RESOLUTION.height())
                 {
                     m_platforms[i].y = 0;
-                    m_platforms[i].x = rand() % 400;
+                    m_platforms[i].x = rand() % Game::RESOLUTION.width();
                 }
             }
         }
 
-        for (int i=0;i<10;i++)
+        for (int i = 0 ; i < m_countOfPlatforms; i++)
         {
 
-            if ( (m_heroXpos + 50 > m_platforms[i].x) && (m_heroXpos + 20 < m_platforms[i].x + 68)
-            && (m_heroYpos + 70 > m_platforms[i].y) && (m_heroYpos + 70 < m_platforms[i].y + 14) && (m_deltaY > 0))
+            if ( (m_heroXpos + 50 > m_platforms[i].x) && (m_heroXpos + 20 < (m_platforms[i].x + m_platformItem->boundingRect().width()))
+            && (m_heroYpos + 70 > m_platforms[i].y) && (m_heroYpos + 70 < (m_platforms[i].y + m_platformItem->boundingRect().height())) && (m_deltaY > 0))
             {
                 m_deltaY = -10;
             }
