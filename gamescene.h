@@ -6,6 +6,7 @@
 
 #include "game.h"
 #include "point.h"
+#include <QPixmap>
 
 class QGraphicsPixmapItem;
 class QTimer;
@@ -47,6 +48,8 @@ private:
     Point m_platforms[10];
 
     QTimer *m_timer;
+
+    QPixmap m_heroPixmap;
 private slots:
     void update();
 };

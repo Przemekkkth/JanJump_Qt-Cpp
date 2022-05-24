@@ -12,7 +12,8 @@ GameScene::GameScene(QObject *parent)
     Game::init();
     setSceneRect(0, 0, m_game.RESOLUTION.width(), m_game.RESOLUTION.height());
 //
-    m_heroItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_DOODLE_PIXMAP));
+    m_heroPixmap.load(m_game.PATH_TO_HERO_PIXMAP);
+    m_heroItem = new QGraphicsPixmapItem(QPixmap(m_heroPixmap));
     m_heroTransform = m_heroItem->transform();
     addItem(m_heroItem);
     m_timer = new QTimer(this);
@@ -57,7 +58,7 @@ void GameScene::keyReleaseEvent(QKeyEvent *event)
 void GameScene::update()
 {
     clear();
-    m_heroItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_DOODLE_PIXMAP));
+    m_heroItem = new QGraphicsPixmapItem(QPixmap(m_heroPixmap.copy(0,0,64,64)));
     m_bgIteam = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_BACKGROUND_PIXMAP).scaled(Game::RESOLUTION.width(), Game::RESOLUTION.height()));
     m_platformItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP).scaled(64,16));
     //platform resolution 68x14
@@ -143,6 +144,16 @@ void GameScene::update()
         addItem(platform_item);
     }
     qDebug() << "deltaY " << m_deltaY;
+    if( m_deltaY < 0)
+    {
+        //jump
+        m_heroItem->setPixmap(m_heroPixmap.copy(64,0,64,64));
+    }
+    else
+    {
+        //fall
+        m_heroItem->setPixmap(m_heroPixmap.copy(0,0,64,64));
+    }
     m_heroItem->setTransform(m_heroTransform);
     m_heroItem->setPos(m_heroXpos, m_heroYpos);
     addItem(m_heroItem);

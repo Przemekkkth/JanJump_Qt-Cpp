@@ -6,7 +6,7 @@ float Game::DELAY;
 Game::Game()
 {
     PATH_TO_BACKGROUND_PIXMAP = ":/images/background.png";
-    PATH_TO_DOODLE_PIXMAP = ":/images/doodle.png";
+    PATH_TO_HERO_PIXMAP = ":/images/hero.png";
     PATH_TO_PLATFORM_PIXMAP = ":/images/platform.png";
 }
 
