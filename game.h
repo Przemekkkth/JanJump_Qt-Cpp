@@ -14,6 +14,7 @@ public:
     QString PATH_TO_HERO_PIXMAP;
     QString PATH_TO_PLATFORM_PIXMAP;
     static float DELAY;
+    static const float JUMP_FORCE;
 };
 
 #endif // GAME_H

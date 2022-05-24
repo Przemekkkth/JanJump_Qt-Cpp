@@ -2,6 +2,7 @@
 
 QSize Game::RESOLUTION;
 float Game::DELAY;
+const float Game::JUMP_FORCE = -10.0f;
 
 Game::Game()
 {

@@ -79,12 +79,9 @@ void GameScene::update()
     m_heroItem = new QGraphicsPixmapItem(QPixmap(m_heroPixmap.copy(0,0,34,64)));
     m_bgIteam = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_BACKGROUND_PIXMAP).scaled(Game::RESOLUTION.width(), Game::RESOLUTION.height()));
     m_platformItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP).scaled(64,16));
-    //platform resolution 68x14
+
     addItem(m_bgIteam);
-
-
     addItem(m_platformItem);
-
 
     m_time_since_last_iteration += m_iteration_value;
     if(m_time_since_last_iteration > Game::DELAY)
@@ -117,7 +114,7 @@ void GameScene::update()
         m_heroYpos += m_deltaY;
         if ( m_heroYpos > 500)
         {
-            m_deltaY = -10;
+            m_deltaY = Game::JUMP_FORCE;
         }
 
         if (m_heroYpos < m_height)
@@ -142,7 +139,7 @@ void GameScene::update()
                 if ( (m_heroXpos + 50 > m_platforms[i].x) && (m_heroXpos + 20 < (m_platforms[i].x + m_platformItem->boundingRect().width()))
                 && (m_heroYpos + 70 > m_platforms[i].y) && (m_heroYpos + 70 < (m_platforms[i].y + m_platformItem->boundingRect().height())) && (m_deltaY > 0))
                 {
-                    m_deltaY = -10;
+                    m_deltaY = Game::JUMP_FORCE;
                 }
             }
             else
@@ -150,7 +147,7 @@ void GameScene::update()
                 if ( (m_heroXpos - 50 > m_platforms[i].x) && (m_heroXpos - 20 < (m_platforms[i].x + m_platformItem->boundingRect().width()))
                 && (m_heroYpos + 70 > m_platforms[i].y) && (m_heroYpos + 70 < (m_platforms[i].y + m_platformItem->boundingRect().height())) && (m_deltaY > 0))
                 {
-                    m_deltaY = -10;
+                    m_deltaY = Game::JUMP_FORCE;
                 }
             }
         }
@@ -166,12 +163,12 @@ void GameScene::update()
     qDebug() << "heroXpos " << m_heroXpos;
     if( m_deltaY < 0)
     {
-        //jump
+        //jump pixmap
         m_heroItem->setPixmap(m_heroPixmap.copy(34,0,34,64));
     }
     else
     {
-        //fall
+        //fall pixmap
         m_heroItem->setPixmap(m_heroPixmap.copy(0,0,34,64));
     }
     m_heroItem->setTransform(m_heroTransform);
