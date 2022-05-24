@@ -24,6 +24,8 @@ protected:
     virtual void keyPressEvent(QKeyEvent *event) override;
     virtual void keyReleaseEvent(QKeyEvent *event) override;
 private:
+    void clampXpos();
+
     Game m_game;
     float m_time_since_last_iteration;
     const float m_iteration_value;

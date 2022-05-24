@@ -55,6 +55,24 @@ void GameScene::keyReleaseEvent(QKeyEvent *event)
     QGraphicsScene::keyReleaseEvent(event);
 }
 
+void GameScene::clampXpos()
+{
+    if(m_heroTransform.m11() == -1 ) //isTurnLeft
+    {
+        if(m_heroXpos - m_heroItem->boundingRect().width() < 0)
+        {
+            m_heroXpos = m_heroItem->boundingRect().width();
+        }
+    }
+    else //isTurnRight
+    {
+        if(m_heroXpos + m_heroItem->boundingRect().width() > Game::RESOLUTION.width())
+        {
+            m_heroXpos = Game::RESOLUTION.width() - m_heroItem->boundingRect().width();
+        }
+    }
+}
+
 void GameScene::update()
 {
     clear();
@@ -94,6 +112,7 @@ void GameScene::update()
             }
         }
 
+
         m_deltaY += 0.2f;
         m_heroYpos += m_deltaY;
         if ( m_heroYpos > 500)
@@ -115,6 +134,7 @@ void GameScene::update()
             }
         }
 
+        clampXpos();
         for (int i = 0 ; i < m_countOfPlatforms; i++)
         {
             if(m_facingRight)
@@ -136,14 +156,14 @@ void GameScene::update()
         }
     }
 
-
+    clampXpos();
     for(int i = 0; i < m_countOfPlatforms; ++i)
     {
         QGraphicsPixmapItem* platform_item = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP).scaled(64,16));
         platform_item->setPos(m_platforms[i].x, m_platforms[i].y);
         addItem(platform_item);
     }
-    qDebug() << "deltaY " << m_deltaY;
+    qDebug() << "heroXpos " << m_heroXpos;
     if( m_deltaY < 0)
     {
         //jump
