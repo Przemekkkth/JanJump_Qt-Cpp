@@ -58,7 +58,7 @@ void GameScene::update()
 {
     clear();
     m_heroItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_DOODLE_PIXMAP));
-    m_bgIteam = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_BACKGROUND_PIXMAP));
+    m_bgIteam = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_BACKGROUND_PIXMAP).scaled(Game::RESOLUTION.width(), Game::RESOLUTION.height()));
     m_platformItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP));
     //platform resolution 68x14
     addItem(m_bgIteam);
@@ -132,7 +132,6 @@ void GameScene::update()
                     m_deltaY = -10;
                 }
             }
-
         }
 
     }
