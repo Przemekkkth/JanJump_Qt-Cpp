@@ -59,7 +59,7 @@ void GameScene::update()
     clear();
     m_heroItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_DOODLE_PIXMAP));
     m_bgIteam = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_BACKGROUND_PIXMAP).scaled(Game::RESOLUTION.width(), Game::RESOLUTION.height()));
-    m_platformItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP));
+    m_platformItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP).scaled(64,16));
     //platform resolution 68x14
     addItem(m_bgIteam);
 
@@ -133,16 +133,16 @@ void GameScene::update()
                 }
             }
         }
-
     }
 
 
     for(int i = 0; i < m_countOfPlatforms; ++i)
     {
-        QGraphicsPixmapItem* platform_item = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP));
+        QGraphicsPixmapItem* platform_item = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PLATFORM_PIXMAP).scaled(64,16));
         platform_item->setPos(m_platforms[i].x, m_platforms[i].y);
         addItem(platform_item);
     }
+    qDebug() << "deltaY " << m_deltaY;
     m_heroItem->setTransform(m_heroTransform);
     m_heroItem->setPos(m_heroXpos, m_heroYpos);
     addItem(m_heroItem);
