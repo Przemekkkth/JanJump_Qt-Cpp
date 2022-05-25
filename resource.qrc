@@ -3,5 +3,6 @@
         <file>images/platform.png</file>
         <file>images/background.png</file>
         <file>images/hero.png</file>
+        <file>images/all_numbers.png</file>
     </qresource>
 </RCC>
