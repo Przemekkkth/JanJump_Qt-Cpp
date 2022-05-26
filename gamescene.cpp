@@ -10,6 +10,7 @@ GameScene::GameScene(QObject *parent)
       m_deltaX(3), m_deltaY(0.2f), m_height(200), m_facingRight(true), m_countOfPlatforms(10)
 {
     Game::init();
+    srand(time(0));
     setSceneRect(0, 0, m_game.RESOLUTION.width(), m_game.RESOLUTION.height());
     //
     m_heroPixmap.load(m_game.PATH_TO_HERO_PIXMAP);
@@ -60,6 +61,14 @@ void GameScene::keyPressEvent(QKeyEvent *event)
         else if(m_game.STATE == Game::State::Paused)
         {
             m_game.STATE = Game::State::Active;
+        }
+    }
+        break;
+    case Qt::Key_R:
+    {
+        if(m_game.STATE == Game::State::Game_Over)
+        {
+            reset();
         }
     }
         break;
@@ -141,6 +150,21 @@ void GameScene::drawScore()
     addItem(hundrethPartScoreItem);
 }
 
+void GameScene::reset()
+{
+    m_heroXpos = 100;
+    m_heroYpos = 100;
+    m_height = 200;
+    for (int i= 0; i < m_countOfPlatforms;i++)
+    {
+        m_platforms[i].x = rand() % Game::RESOLUTION.width();
+        m_platforms[i].y = rand() % Game::RESOLUTION.height();
+    }
+
+    m_game.STATE = Game::State::Active;
+    m_game.POINTS = 0;
+}
+
 void GameScene::update()
 {
     clear();
@@ -183,6 +207,7 @@ void GameScene::update()
         if ( m_heroYpos > Game::DEAD_LEVEL)
         {
             m_deltaY = Game::JUMP_FORCE;
+            m_game.STATE = Game::State::Game_Over;
         }
 
         if (m_heroYpos < m_height)
@@ -252,6 +277,7 @@ void GameScene::update()
     }
     else if(m_game.STATE == Game::State::Game_Over)
     {
-
+        QGraphicsPixmapItem* bgItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_GAME_OVER_BG).scaled(Game::RESOLUTION.width(), Game::RESOLUTION.height()));
+        addItem(bgItem);
     }
 }
