@@ -25,6 +25,7 @@ protected:
     virtual void keyReleaseEvent(QKeyEvent *event) override;
 private:
     void clampXpos();
+    void drawScore();
 
     Game m_game;
     float m_time_since_last_iteration;
@@ -52,6 +53,7 @@ private:
     QTimer *m_timer;
 
     QPixmap m_heroPixmap;
+    QPixmap m_numberPixmap;
 private slots:
     void update();
 };

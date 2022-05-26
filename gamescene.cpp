@@ -16,6 +16,9 @@ GameScene::GameScene(QObject *parent)
     m_heroItem = new QGraphicsPixmapItem(QPixmap(m_heroPixmap));
     m_heroTransform = m_heroItem->transform();
     addItem(m_heroItem);
+//
+   m_numberPixmap.load(m_game.PATH_TO_ALL_NUMBERS_PIXMAP);
+//
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &GameScene::update);
     m_timer->start(m_iteration_value);
@@ -73,6 +76,47 @@ void GameScene::clampXpos()
     }
 }
 
+void GameScene::drawScore()
+{
+    QString scoreText = QString::number(m_game.POINTS);
+    int unityPartVal = 0;
+    int decimalPartValue = 0;
+    int hendredthPartValue = 0;
+
+    if(scoreText.length() == 1) // 0 - 9
+    {
+        unityPartVal = scoreText.toInt();
+        decimalPartValue = 0;
+        hendredthPartValue = 0;
+    }
+    else if(scoreText.length() == 2) // 10 - 99
+    {
+        unityPartVal = scoreText.last(1).toInt();
+        decimalPartValue = scoreText.first(1).toInt();
+        hendredthPartValue = 0;
+    }
+    else if(scoreText.length() == 3) // 100 - 999
+    {
+        unityPartVal = scoreText.last(1).toInt();
+        hendredthPartValue = scoreText.first(1).toInt();
+        QString copyVal = scoreText;
+        copyVal.chop(1);
+        decimalPartValue = copyVal.last(1).toInt();
+    }
+
+    QGraphicsPixmapItem* unityPartScoreItem = new QGraphicsPixmapItem(m_numberPixmap.copy(unityPartVal * Game::NUMBER_SIZE.width(), 0, Game::NUMBER_SIZE.width(), Game::NUMBER_SIZE.width()));
+    unityPartScoreItem->moveBy( Game::RESOLUTION.width() - Game::NUMBER_SIZE.width(), 0);
+    addItem(unityPartScoreItem);
+
+    QGraphicsPixmapItem* decimalPartScoreItem = new QGraphicsPixmapItem(m_numberPixmap.copy(decimalPartValue * Game::NUMBER_SIZE.width(), 0, Game::NUMBER_SIZE.width(), Game::NUMBER_SIZE.width()));
+    decimalPartScoreItem->moveBy(Game::RESOLUTION.width() - 2 * Game::NUMBER_SIZE.width(), 0);
+    addItem(decimalPartScoreItem);
+
+    QGraphicsPixmapItem* hundrethPartScoreItem = new QGraphicsPixmapItem(m_numberPixmap.copy(hendredthPartValue * Game::NUMBER_SIZE.width(), 0, Game::NUMBER_SIZE.width(), Game::NUMBER_SIZE.height()));
+    hundrethPartScoreItem->moveBy(Game::RESOLUTION.width() - 3 * Game::NUMBER_SIZE.width(), 0);
+    addItem(hundrethPartScoreItem);
+}
+
 void GameScene::update()
 {
     clear();
@@ -125,6 +169,7 @@ void GameScene::update()
                 m_platforms[i].y = m_platforms[i].y - m_deltaY;
                 if (m_platforms[i].y > Game::RESOLUTION.height())
                 {
+                    m_game.POINTS++;
                     m_platforms[i].y = 0;
                     m_platforms[i].x = rand() % Game::RESOLUTION.width();
                 }
@@ -174,4 +219,5 @@ void GameScene::update()
     m_heroItem->setTransform(m_heroTransform);
     m_heroItem->setPos(m_heroXpos, m_heroYpos);
     addItem(m_heroItem);
+    drawScore();
 }
