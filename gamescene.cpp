@@ -11,14 +11,14 @@ GameScene::GameScene(QObject *parent)
 {
     Game::init();
     setSceneRect(0, 0, m_game.RESOLUTION.width(), m_game.RESOLUTION.height());
-//
+    //
     m_heroPixmap.load(m_game.PATH_TO_HERO_PIXMAP);
     m_heroItem = new QGraphicsPixmapItem(QPixmap(m_heroPixmap));
     m_heroTransform = m_heroItem->transform();
     addItem(m_heroItem);
-//
-   m_numberPixmap.load(m_game.PATH_TO_ALL_NUMBERS_PIXMAP);
-//
+    //
+    m_numberPixmap.load(m_game.PATH_TO_ALL_NUMBERS_PIXMAP);
+    //
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &GameScene::update);
     m_timer->start(m_iteration_value);
@@ -34,10 +34,34 @@ void GameScene::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Left:
-        m_leftMove = true;
+    {
+        if( m_game.STATE == Game::State::Active )
+        {
+            m_leftMove = true;
+        }
+    }
+
         break;
     case Qt::Key_Right:
-        m_rightMove = true;
+    {
+        if( m_game.STATE == Game::State::Active)
+        {
+            m_rightMove = true;
+        }
+    }
+
+        break;
+    case Qt::Key_P:
+    {
+        if(m_game.STATE == Game::State::Active)
+        {
+            m_game.STATE = Game::State::Paused;
+        }
+        else if(m_game.STATE == Game::State::Paused)
+        {
+            m_game.STATE = Game::State::Active;
+        }
+    }
         break;
 
     }
@@ -128,7 +152,7 @@ void GameScene::update()
     addItem(m_platformItem);
 
     m_time_since_last_iteration += m_iteration_value;
-    if(m_time_since_last_iteration > Game::DELAY)
+    if(m_time_since_last_iteration > Game::DELAY && m_game.STATE == Game::State::Active)
     {
         m_time_since_last_iteration = 0;
         if(m_leftMove)
@@ -136,9 +160,9 @@ void GameScene::update()
             m_heroXpos -= m_deltaX;
             if(m_heroTransform.m11() != -1)
             {
-               m_heroTransform = m_heroTransform.scale(-1, 1);
-               m_facingRight = false;
-               m_heroXpos += m_heroItem->boundingRect().width();
+                m_heroTransform = m_heroTransform.scale(-1, 1);
+                m_facingRight = false;
+                m_heroXpos += m_heroItem->boundingRect().width();
             }
 
         }
@@ -147,9 +171,9 @@ void GameScene::update()
             m_heroXpos += m_deltaX;
             if(m_heroTransform.m11() != 1)
             {
-               m_heroTransform = m_heroItem->transform();
-               m_facingRight = true;
-               m_heroXpos -= m_heroItem->boundingRect().width();
+                m_heroTransform = m_heroItem->transform();
+                m_facingRight = true;
+                m_heroXpos -= m_heroItem->boundingRect().width();
             }
         }
 
@@ -182,7 +206,7 @@ void GameScene::update()
             if(m_facingRight)
             {
                 if ( (m_heroXpos + Game::X_OFFSET > m_platforms[i].x) && (m_heroXpos + Game::X_OFFSET < (m_platforms[i].x + m_platformItem->boundingRect().width()))
-                && (m_heroYpos + Game::Y_OFFSET > m_platforms[i].y) && (m_heroYpos + Game::Y_OFFSET < (m_platforms[i].y + m_platformItem->boundingRect().height())) && (m_deltaY > 0))
+                     && (m_heroYpos + Game::Y_OFFSET > m_platforms[i].y) && (m_heroYpos + Game::Y_OFFSET < (m_platforms[i].y + m_platformItem->boundingRect().height())) && (m_deltaY > 0))
                 {
                     m_deltaY = Game::JUMP_FORCE;
                 }
@@ -190,7 +214,7 @@ void GameScene::update()
             else
             {
                 if ( (m_heroXpos - Game::X_OFFSET > m_platforms[i].x) && (m_heroXpos - Game::X_OFFSET < (m_platforms[i].x + m_platformItem->boundingRect().width()))
-                && (m_heroYpos + Game::Y_OFFSET > m_platforms[i].y) && (m_heroYpos + Game::Y_OFFSET < (m_platforms[i].y + m_platformItem->boundingRect().height())) && (m_deltaY > 0))
+                     && (m_heroYpos + Game::Y_OFFSET > m_platforms[i].y) && (m_heroYpos + Game::Y_OFFSET < (m_platforms[i].y + m_platformItem->boundingRect().height())) && (m_deltaY > 0))
                 {
                     m_deltaY = Game::JUMP_FORCE;
                 }
@@ -220,4 +244,14 @@ void GameScene::update()
     m_heroItem->setPos(m_heroXpos, m_heroYpos);
     addItem(m_heroItem);
     drawScore();
+
+    if(m_game.STATE == Game::State::Paused)
+    {
+        QGraphicsPixmapItem* bgItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_PAUSED_BG).scaled(Game::RESOLUTION.width(), Game::RESOLUTION.height()));
+        addItem(bgItem);
+    }
+    else if(m_game.STATE == Game::State::Game_Over)
+    {
+
+    }
 }

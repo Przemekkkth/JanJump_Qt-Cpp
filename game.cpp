@@ -17,7 +17,11 @@ Game::Game()
     PATH_TO_HERO_PIXMAP = ":/images/hero.png";
     PATH_TO_PLATFORM_PIXMAP = ":/images/platform.png";
     PATH_TO_ALL_NUMBERS_PIXMAP = ":/images/all_numbers.png";
+    PATH_TO_PAUSED_BG = ":/images/bg_pause.png";
+    PATH_TO_GAME_OVER_BG = ":/images/bg_gameover.png";
     POINTS = 0;
+
+
 }
 
 void Game::init()
