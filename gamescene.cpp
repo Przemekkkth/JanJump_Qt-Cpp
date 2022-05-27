@@ -77,7 +77,7 @@ void GameScene::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Z:
     {
-        renderScene();
+        //renderScene();//uncomment if you want to make screenshots
     }
         break;
 
