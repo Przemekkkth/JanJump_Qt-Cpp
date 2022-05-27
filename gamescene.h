@@ -43,10 +43,6 @@ private:
     QGraphicsPixmapItem* m_heroItem;
     QTransform m_heroTransform;
     bool m_facingRight;
-
-    QGraphicsPixmapItem* m_bgIteam;
-    QGraphicsPixmapItem* m_platformItem;
-
     const int m_countOfPlatforms;
     Point m_platforms[10];
 
@@ -54,6 +50,7 @@ private:
 
     QPixmap m_heroPixmap;
     QPixmap m_numberPixmap;
+    QPixmap m_platformPixmap;
 private slots:
     void update();
 };
