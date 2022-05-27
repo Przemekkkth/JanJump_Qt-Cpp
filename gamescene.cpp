@@ -3,6 +3,8 @@
 #include <QKeyEvent>
 #include <QGraphicsPixmapItem>
 #include <QTimer>
+#include <QDir>
+#include <QPainter>
 
 GameScene::GameScene(QObject *parent)
     : QGraphicsScene{parent}, m_iteration_value(1000.0f/60.0f),
@@ -71,6 +73,11 @@ void GameScene::keyPressEvent(QKeyEvent *event)
         {
             reset();
         }
+    }
+        break;
+    case Qt::Key_Z:
+    {
+        renderScene();
     }
         break;
 
@@ -164,6 +171,19 @@ void GameScene::reset()
 
     m_game.STATE = Game::State::Active;
     m_game.POINTS = 0;
+}
+
+void GameScene::renderScene()
+{
+    static int index = 0;
+    QString fileName = QDir::currentPath() + QDir::separator() + "screen" + QString::number(index++) + ".png";
+    QRect rect = sceneRect().toAlignedRect();
+    QImage image(rect.size(), QImage::Format_ARGB32);
+    image.fill(Qt::transparent);
+    QPainter painter(&image);
+    render(&painter);
+    image.save(fileName);
+    qDebug() << "saved " << fileName;
 }
 
 void GameScene::update()

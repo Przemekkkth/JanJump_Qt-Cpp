@@ -27,6 +27,7 @@ private:
     void clampXpos();
     void drawScore();
     void reset();
+    void renderScene();
     Game m_game;
     float m_time_since_last_iteration;
     const float m_iteration_value;
