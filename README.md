@@ -24,4 +24,4 @@ qmake && make
 ```
 ## Addons
 * [Qt] (https://www.qt.io/) - Cross-Platform software for embedded & desktop
-
+* [Video](https://youtube.com/shorts/3g40t0K3p68) - gameplay on youtube
