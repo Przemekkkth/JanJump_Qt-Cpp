@@ -15,6 +15,7 @@ GameScene::GameScene(QObject *parent)
     srand(time(0));
     setSceneRect(0, 0, m_game.RESOLUTION.width(), m_game.RESOLUTION.height());
     //
+    setBackgroundBrush(Qt::white);
     m_heroPixmap.load(m_game.PATH_TO_HERO_PIXMAP);
     m_heroItem = new QGraphicsPixmapItem(QPixmap(m_heroPixmap));
     m_heroTransform = m_heroItem->transform();
@@ -194,9 +195,9 @@ void GameScene::update()
 
     addItem(bgIteam);
     m_time_since_last_iteration += m_iteration_value;
-    if(m_time_since_last_iteration > Game::DELAY && m_game.STATE == Game::State::Active)
+    while(m_time_since_last_iteration > Game::DELAY && m_game.STATE == Game::State::Active)
     {
-        m_time_since_last_iteration = 0;
+        m_time_since_last_iteration = -Game::DELAY;
         if(m_leftMove)
         {
             m_heroXpos -= m_deltaX;
@@ -298,4 +299,18 @@ void GameScene::update()
         QGraphicsPixmapItem* bgItem = new QGraphicsPixmapItem(QPixmap(m_game.PATH_TO_GAME_OVER_BG).scaled(Game::RESOLUTION.width(), Game::RESOLUTION.height()));
         addItem(bgItem);
     }
+
+    QGraphicsRectItem* rItem = new QGraphicsRectItem();
+    rItem->setBrush(backgroundBrush().color());
+    rItem->setPen(backgroundBrush().color());
+    rItem->setRect(0,0, 100, m_game.RESOLUTION.height());
+    rItem->setPos(m_game.RESOLUTION.width(), 0);
+    addItem(rItem);
+
+    QGraphicsRectItem* bItem = new QGraphicsRectItem();
+    bItem->setBrush(backgroundBrush().color());
+    bItem->setPen(backgroundBrush().color());
+    bItem->setRect(0,0, m_game.RESOLUTION.width()+100, 100);
+    bItem->setPos(0, m_game.RESOLUTION.height());
+    addItem(bItem);
 }
